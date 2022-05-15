@@ -1,0 +1,3 @@
+[submodule "proto"]
+	path = proto
+	url = git@git.badhouseplants.net:BadHouseplants/postman-proto.git

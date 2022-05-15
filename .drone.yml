@@ -1,0 +1,12 @@
+kind: pipeline
+name: default
+type: kubernetes
+
+steps:
+- name: docker  
+  image: plugins/docker
+  settings:
+    repo: reg.badhouseplants.net/postman-service
+    tags: 
+      - latest 
+      - main

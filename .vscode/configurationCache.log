@@ -1,0 +1,1 @@
+{"buildTargets":["docker-protobuf","protobuf","update-go-proto"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}
