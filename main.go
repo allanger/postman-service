@@ -12,6 +12,7 @@ import (
 	"time"
 
 	pb "git.badhouseplants.net/badhouseplants/postman-service/pkg/proto"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -66,7 +67,7 @@ Subject: %s
 		fmt.Println("Error SendMail: ", err)
 		return nil, err
 	}
-	fmt.Println("Email Sent!")
+	logrus.Infof("email is sent from %s", in.SenderEmail)
 
 	return &emptypb.Empty{}, nil
 }
@@ -107,6 +108,11 @@ func main() {
 		err := fmt.Errorf("POSTMAN_SMTP_HOST variable is not set")
 		log.Fatal(err)
 	}
+	devMode, present := os.LookupEnv("POSTMAN_DEV_MODE")
+	if present {
+		logrus.Info("postman is running in development mode, the reflection is enabled")
+	}
+
 	s := grpc.NewServer()
 	pb.RegisterPostmanServer(s, &server{
 		senderName:     senderName,
@@ -115,9 +121,11 @@ func main() {
 		receiverName:   receiverName,
 		smtpHost:       smtpHost,
 	})
+	if len(devMode) > 0 {
+		reflection.Register(s)
+	}
 
-	reflection.Register(s)
-	log.Printf("server listening at %v", lis.Addr())
+	logrus.Infof("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

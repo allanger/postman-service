@@ -3,6 +3,7 @@ module git.badhouseplants.net/badhouseplants/postman-service
 go 1.18
 
 require (
+	github.com/sirupsen/logrus v1.8.1
 	google.golang.org/grpc v1.46.2
 	google.golang.org/protobuf v1.27.1
 )
